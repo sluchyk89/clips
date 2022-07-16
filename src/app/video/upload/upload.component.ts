@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-upload',
@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UploadComponent implements OnInit {
 
-  constructor() { }
+  isDragover = false;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  storeFile($event: Event) {
+    this.isDragover = false
   }
 
 }
