@@ -50,8 +50,12 @@ export class UploadComponent implements OnInit {
   }
 
   storeFile($event: Event) {
+
     this.isDragover = false;
-    this.file = ($event as DragEvent).dataTransfer?.files.item(0) ?? null;
+    this.file =  ($event as DragEvent).dataTransfer ?
+      ($event as DragEvent).dataTransfer?.files.item(0) ?? null :
+      ($event.target as HTMLInputElement).files?.item(0) ?? null;
+
     if (!this.file || !(this.file.type === 'video/mp4' || this.file.type === 'video/webm')) {
       return
     }
