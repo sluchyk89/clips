@@ -5,6 +5,7 @@ import {v4 as uuid} from 'uuid';
 import {last, switchMap} from "rxjs";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import firebase from "firebase/compat/app";
+import {ClipService} from "../../services/clip.service";
 
 
 @Component({
@@ -39,7 +40,8 @@ export class UploadComponent implements OnInit {
 
   constructor(
     private storage: AngularFireStorage,
-    private auth: AngularFireAuth
+    private auth: AngularFireAuth,
+    private clipService: ClipService
   ) {
     this.auth.user.subscribe(user => this.user = user)
   }
@@ -81,12 +83,15 @@ export class UploadComponent implements OnInit {
       next: (url) => {
 
         const clip = {
-          uid: this.user?.uid,
-          displayName: this.user?.displayName,
+          uid: this.user?.uid as string,
+          displayName: this.user?.displayName as string,
           title: this.title.value,
           fileName: `${clipFileName}.mp4`,
           url
         }
+
+        this.clipService.createClip(clip)
+
 
         this.alertColor = 'green';
         this.alertMsg = 'Success! Your clip is ready to shear with others!';
