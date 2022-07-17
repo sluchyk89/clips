@@ -81,7 +81,6 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
     this.alertMsg = 'Success!'
   }
 
-
   ngOnDestroy() {
     this.modal.unregister('editClip')
   }

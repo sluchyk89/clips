@@ -6,9 +6,10 @@ import {
   QuerySnapshot
 } from "@angular/fire/compat/firestore";
 import IClip from "../models/clip.model";
-import { AngularFireAuth} from "@angular/fire/compat/auth";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {of, switchMap} from "rxjs";
 import {map} from "rxjs/operators";
+import {AngularFireStorage} from "@angular/fire/compat/storage";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class ClipService {
 
   constructor(
     private db: AngularFirestore,
-    private auth: AngularFireAuth
+    private auth: AngularFireAuth,
+    private storage: AngularFireStorage
   ) {
     this.clipCollection = db.collection('clips')
   }
@@ -27,25 +29,32 @@ export class ClipService {
     return this.clipCollection.add(data)
   }
 
-  updateClip(id:string, title:string){
-    return  this.clipCollection.doc(id).update({
-       title
-     })
+  updateClip(id: string, title: string) {
+    return this.clipCollection.doc(id).update({
+      title
+    })
   }
 
-  getUserClips(){
-     return this.auth.user.pipe(
-        switchMap(user =>{
-            if(!user){
-               return of([])
-            }
-            const query = this.clipCollection.ref.where(
-              'uid','==', user.uid
-            )
+  async deleteClip(clip: IClip) {
+    const clipRef = this.storage.ref(`clips/${clip.fileName}`)
+    await clipRef.delete();
+    await this.clipCollection.doc(clip.docID).delete()
 
-         return  query.get()
-        }),
-       map(snapshot=>(snapshot as QuerySnapshot<IClip>).docs)
-     )
+  }
+
+  getUserClips() {
+    return this.auth.user.pipe(
+      switchMap(user => {
+        if (!user) {
+          return of([])
+        }
+        const query = this.clipCollection.ref.where(
+          'uid', '==', user.uid
+        )
+
+        return query.get()
+      }),
+      map(snapshot => (snapshot as QuerySnapshot<IClip>).docs)
+    )
   }
 }
