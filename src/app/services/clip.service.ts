@@ -27,6 +27,12 @@ export class ClipService {
     return this.clipCollection.add(data)
   }
 
+  updateClip(id:string, title:string){
+    return  this.clipCollection.doc(id).update({
+       title
+     })
+  }
+
   getUserClips(){
      return this.auth.user.pipe(
         switchMap(user =>{
