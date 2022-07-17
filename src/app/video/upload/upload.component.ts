@@ -6,6 +6,7 @@ import {last, switchMap} from "rxjs";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import firebase from "firebase/compat/app";
 import {ClipService} from "../../services/clip.service";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -42,7 +43,8 @@ export class UploadComponent implements OnDestroy {
   constructor(
     private storage: AngularFireStorage,
     private auth: AngularFireAuth,
-    private clipService: ClipService
+    private clipService: ClipService,
+    private router: Router
   ) {
     this.auth.user.subscribe(user => this.user = user)
   }
@@ -54,7 +56,7 @@ export class UploadComponent implements OnDestroy {
   storeFile($event: Event) {
 
     this.isDragover = false;
-    this.file =  ($event as DragEvent).dataTransfer ?
+    this.file = ($event as DragEvent).dataTransfer ?
       ($event as DragEvent).dataTransfer?.files.item(0) ?? null :
       ($event.target as HTMLInputElement).files?.item(0) ?? null;
 
@@ -87,8 +89,7 @@ export class UploadComponent implements OnDestroy {
       last(),
       switchMap(() => clipRef.getDownloadURL())
     ).subscribe({
-      next: (url) => {
-
+      next: async (url) => {
         const clip = {
           uid: this.user?.uid as string,
           displayName: this.user?.displayName as string,
@@ -97,12 +98,16 @@ export class UploadComponent implements OnDestroy {
           url
         }
 
-        this.clipService.createClip(clip)
-
+        const clipDocRef = await this.clipService.createClip(clip)
 
         this.alertColor = 'green';
         this.alertMsg = 'Success! Your clip is ready to shear with others!';
         this.showPercentage = false;
+        setTimeout(()=>{
+         this.router.navigate([
+           'clip', clipDocRef.id
+         ])
+        },1000)
       },
       error: (error) => {
         this.uploadForm.enable()
