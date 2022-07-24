@@ -56,7 +56,7 @@ export class ClipService {
           'uid', '==', user.uid
         ).orderBy(
           'timestamp',
-          sort === '1' ? 'desc' : 'asc'
+          sort === '1' ? 'desc' : 'asc'  //TODO have a bug with ordering ( not filtering properly, need to take a look)
         )
 
         return query.get()
