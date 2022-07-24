@@ -7,7 +7,7 @@ import {
 } from "@angular/fire/compat/firestore";
 import IClip from "../models/clip.model";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
-import {of, switchMap} from "rxjs";
+import {BehaviorSubject, combineLatest, of, switchMap} from "rxjs";
 import {map} from "rxjs/operators";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 
@@ -42,14 +42,21 @@ export class ClipService {
 
   }
 
-  getUserClips() {
-    return this.auth.user.pipe(
-      switchMap(user => {
+  getUserClips($sort: BehaviorSubject<string>) {
+    return combineLatest([
+      this.auth.user,
+      $sort
+    ]).pipe(
+      switchMap(values => {
+        const [user, sort] = values;
         if (!user) {
           return of([])
         }
         const query = this.clipCollection.ref.where(
           'uid', '==', user.uid
+        ).orderBy(
+          'timestamp',
+          sort === '1' ? 'desc' : 'asc'
         )
 
         return query.get()
