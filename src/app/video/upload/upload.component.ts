@@ -7,6 +7,7 @@ import {AngularFireAuth} from "@angular/fire/compat/auth";
 import firebase from "firebase/compat/app";
 import {ClipService} from "../../services/clip.service";
 import {Router} from "@angular/router";
+import {FfmpegService} from "../../services/ffmpeg.service";
 
 
 @Component({
@@ -44,9 +45,11 @@ export class UploadComponent implements OnDestroy {
     private storage: AngularFireStorage,
     private auth: AngularFireAuth,
     private clipService: ClipService,
-    private router: Router
+    private router: Router,
+    public ffmpegService: FfmpegService
   ) {
-    this.auth.user.subscribe(user => this.user = user)
+    this.auth.user.subscribe(user => this.user = user);
+    this.ffmpegService.init();
   }
 
   ngOnDestroy(): void {
@@ -104,11 +107,11 @@ export class UploadComponent implements OnDestroy {
         this.alertColor = 'green';
         this.alertMsg = 'Success! Your clip is ready to shear with others!';
         this.showPercentage = false;
-        setTimeout(()=>{
-         this.router.navigate([
-           'clip', clipDocRef.id
-         ])
-        },1000)
+        setTimeout(() => {
+          this.router.navigate([
+            'clip', clipDocRef.id
+          ])
+        }, 1000)
       },
       error: (error) => {
         this.uploadForm.enable()
