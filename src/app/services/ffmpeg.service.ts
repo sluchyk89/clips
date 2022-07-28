@@ -22,11 +22,11 @@ export class FfmpegService {
     this.isReady = true;
   }
 
-  async getScreenshots(file: File) {
+  async getScreenshots(file: File): Promise<Array<string>> {
     const data = await fetchFile(file);
     this.ffmpeg.FS('writeFile', file.name, data);
 
-    const seconds = [1, 2, 3];
+    const seconds = [1, 2, 3, 4, 5, 6];
     const commands: string[] = [];
 
     seconds.forEach(second => {
