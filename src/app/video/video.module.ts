@@ -11,17 +11,20 @@ import { SafeURLPipe } from './pipes/safe-url.pipe';
 
 
 @NgModule({
-  declarations: [
-    ManageComponent,
-    UploadComponent,
-    EditComponent,
-    SafeURLPipe
-  ],
-  imports: [
-    CommonModule,
-    VideoRoutingModule,
-    SharedModule,
-    ReactiveFormsModule
-  ]
+    declarations: [
+        ManageComponent,
+        UploadComponent,
+        EditComponent,
+        SafeURLPipe
+    ],
+    exports: [
+        SafeURLPipe
+    ],
+    imports: [
+        CommonModule,
+        VideoRoutingModule,
+        SharedModule,
+        ReactiveFormsModule
+    ]
 })
 export class VideoModule { }
