@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
@@ -9,10 +9,11 @@ import {ActivatedRoute, Params} from "@angular/router";
 export class ClipComponent implements OnInit {
 
   id = '';
+  @ViewChild('videoPlayer', {static: true}) target?: ElementRef
 
   constructor(public rout: ActivatedRoute) {
-    this.rout.params.subscribe((params:Params) => {
-       this.id = params.id
+    this.rout.params.subscribe((params: Params) => {
+      this.id = params.id
     });
   }
 
