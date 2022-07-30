@@ -10,17 +10,19 @@ import videojs from "video.js";
 export class ClipComponent implements OnInit {
 
   id = '';
-  player?: videojs.Player
   @ViewChild('videoPlayer', {static: true}) target?: ElementRef
+  player?: videojs.Player
 
   constructor(public rout: ActivatedRoute) {
+
+  }
+
+  ngOnInit(): void {
+    console.log(this.target)
     this.player = videojs(this.target?.nativeElement)
     this.rout.params.subscribe((params: Params) => {
       this.id = params.id
     });
-  }
-
-  ngOnInit(): void {
   }
 
 }
