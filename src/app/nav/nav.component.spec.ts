@@ -42,6 +42,12 @@ describe('NavComponent', () => {
     const logoutLink = fixture.debugElement.query(By.css('li:nth-child(3) a'));
     expect(logoutLink).withContext('Not logged in').toBeTruthy();
 
+    logoutLink.triggerEventHandler('click');
+
+    const service = TestBed.inject(AuthService);
+
+    expect(service.logout).withContext('Could not click logout link').toHaveBeenCalledTimes(1);
+
   });
 
 
