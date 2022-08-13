@@ -1,18 +1,19 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TabsContainerComponent } from './tabs-container.component';
-import { Component } from "@angular/core";
-import { TabComponent } from "../tab/tab.component";
+import {TabsContainerComponent} from './tabs-container.component';
+import {Component} from "@angular/core";
+import {TabComponent} from "../tab/tab.component";
+import {By} from "@angular/platform-browser";
 
 @Component({
-            template:`
-            <app-tabs-container>
-              <app-tab tabTitle="Tab 1">Tab 1</app-tab>
-              <app-tab tabTitle="Tab 2">Tab 2</app-tab>
-            </app-tabs-container>
-            `
+  template: `
+    <app-tabs-container>
+      <app-tab tabTitle="Tab 1">Tab 1</app-tab>
+      <app-tab tabTitle="Tab 2">Tab 2</app-tab>
+    </app-tabs-container>
+  `
 })
-class TestHostComponent{
+class TestHostComponent {
 
 }
 
@@ -22,9 +23,9 @@ describe('TabsContainerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TabsContainerComponent, TabComponent, TestHostComponent ]
+      declarations: [TabsContainerComponent, TabComponent, TestHostComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
@@ -34,4 +35,13 @@ describe('TabsContainerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have two tabs', () => {
+    const tabs = fixture.debugElement.queryAll(By.css('li'));
+    const containerComponent = fixture.debugElement.query(By.directive(TabsContainerComponent));
+    const tabsProps = containerComponent.componentInstance.tabs;
+    expect(tabs.length).toBe(2);
+    expect(tabsProps.length).toBe(2);
+
+  })
 });
