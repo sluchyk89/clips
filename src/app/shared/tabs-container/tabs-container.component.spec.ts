@@ -40,8 +40,8 @@ describe('TabsContainerComponent', () => {
     const tabs = fixture.debugElement.queryAll(By.css('li'));
     const containerComponent = fixture.debugElement.query(By.directive(TabsContainerComponent));
     const tabsProps = containerComponent.componentInstance.tabs;
-    expect(tabs.length).toBe(2);
-    expect(tabsProps.length).toBe(2);
+    expect(tabs.length).withContext('Tabs did not render').toBe(2);
+    expect(tabsProps.length).withContext('Could not grub component property').toBe(2);
 
   })
 });
