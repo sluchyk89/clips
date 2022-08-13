@@ -3,6 +3,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {NavComponent} from './nav.component';
 import {of} from "rxjs";
 import {AuthService} from "../services/auth.service";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('NavComponent', () => {
   let component: NavComponent;
@@ -20,6 +21,9 @@ describe('NavComponent', () => {
       declarations: [NavComponent],
       providers: [
         {provide: AuthService, useValue: mockedAuthService}
+      ],
+      imports:[
+        RouterTestingModule
       ]
     })
       .compileComponents();
