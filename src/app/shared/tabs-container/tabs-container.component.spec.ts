@@ -42,6 +42,5 @@ describe('TabsContainerComponent', () => {
     const tabsProps = containerComponent.componentInstance.tabs;
     expect(tabs.length).withContext('Tabs did not render').toBe(2);
     expect(tabsProps.length).withContext('Could not grub component property').toBe(2);
-
   })
 });
